@@ -1,5 +1,5 @@
 ﻿@page "/counter"
-@inject System.Reactive.Subjects.Subject<int> _subject
+@inject Notifier _notifier
 
 <PageTitle>Counter</PageTitle>
 
@@ -15,6 +15,6 @@
     private void IncrementCount()
     {
         currentCount++;
-        _subject.OnNext(currentCount);
+        _notifier.Notify(currentCount);
     }
 }

@@ -1,8 +1,7 @@
+using BlazorApp2;
 using BlazorApp2.Data;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
-using System.Reactive.Linq;
-using System.Reactive.Subjects;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,7 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddSingleton<WeatherForecastService>();
-builder.Services.AddSingleton<Subject<int>>();
+builder.Services.AddSingleton<Notifier>();
 
 var app = builder.Build();
 

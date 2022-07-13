@@ -1,9 +1,6 @@
-﻿@using System.Reactive
-@using System.Reactive.Linq
-@using System.Diagnostics
-@page "/"
+﻿@page "/"
 @implements IDisposable
-@inject System.Reactive.Subjects.Subject<int> _subject
+@inject Notifier _notifier
 
 <PageTitle>Index</PageTitle>
 
@@ -11,24 +8,26 @@
 
 <p>@_message</p>
 
-@code{
+@code {
     private string _message = "";
-    private IDisposable? _disposable;
 
     protected override void OnInitialized()
     {
-        _disposable = _subject.ObserveOn(SynchronizationContext.Current!)
-            .Subscribe(x =>
-            {
-                _message = $"誰かがカウント押した: {x}";
-                StateHasChanged();
-            });
+        _notifier.CounterChanged += CounterChanged;
+    }
+
+    private async void CounterChanged(object? sender, CounterChangedEventArgs e)
+    {
+        await InvokeAsync(() =>
+        {
+            _message = $"誰かがカウント押した: {e.Count}";
+            StateHasChanged();
+        });
     }
 
     public void Dispose()
     {
-        Debug.WriteLine("Dispose!!");
-        _disposable?.Dispose();
+        _notifier.CounterChanged -= CounterChanged;
     }
 
 }
